@@ -1,6 +1,6 @@
 package com.example.blip_be.domain.user.facade;
 
-import com.example.blip_be.domain.user.domain.User;
+import com.example.blip_be.domain.user.domain.UserEntity;
 import com.example.blip_be.domain.user.domain.repository.UserRepository;
 import com.example.blip_be.domain.user.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -13,14 +13,10 @@ public class UserFacade {
 
     private final UserRepository userRepository;
 
-    public User getCurrentUser() {
-        String accountId = SecurityContextHolder.getContext().getAuthentication().getName();
+    public UserEntity getCurrentUser() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        return userRepository.findByAccountId(accountId)
+        return userRepository.findByEmail(email)
                 .orElseThrow(()-> UserNotFoundException.EXCEPTION);
-    }
-
-    public Boolean checkUserExist(String accountId) {
-        return userRepository.existsByAccountId(accountId);
     }
 }

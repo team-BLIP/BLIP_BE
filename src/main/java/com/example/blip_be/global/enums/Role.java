@@ -19,7 +19,8 @@ public enum Role {
             Permission.INVITE_TEAM_MEMBER
     )),
     USER(Set.of(
-            Permission.READ
+            Permission.READ,
+            Permission.CREATE
     ));
 
     private final Set<Permission> permissions;
