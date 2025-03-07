@@ -23,10 +23,9 @@ public class UserController {
     public void signUp(
             @RequestPart("account_id") String accountId,
             @RequestPart("password") String password,
-            @RequestPart("email") String email,
-            @RequestPart("voice_data") MultipartFile voiceData
+            @RequestPart("email") String email
     ) {
-        SignUpRequest request = new SignUpRequest(accountId, password, email, voiceData);
+        SignUpRequest request = new SignUpRequest(accountId, password, email);
         signUpService.registerUser(request);
     }
 

@@ -21,20 +21,17 @@ public class SignUpService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RedisEmailAuthentication redisEmailAuthentication;
-    private final FileUploadService fileUploadService;
 
     @Transactional
     public void registerUser(SignUpRequest request) {
 
         validateUsername(request.getAccountId());
         validateMailAuthentication(request.getEmail());
-        String voiceDataPath = fileUploadService.uploadVoiceFile(request.getVoiceData());
 
         UserEntity user = UserEntity.builder()
                 .accountId(request.getAccountId())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .email(request.getEmail())
-                .voiceDataPath(voiceDataPath)
                 .role(Role.USER)
                 .build();
         userRepository.save(user);

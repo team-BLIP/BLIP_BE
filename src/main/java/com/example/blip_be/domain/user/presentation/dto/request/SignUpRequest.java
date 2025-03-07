@@ -25,6 +25,4 @@ public class SignUpRequest {
     @NotBlank
     @Email(message = "이메일 형식이 아닙니다.")
     private String email;
-
-    private MultipartFile voiceData; // 음성 데이터 추가
 }
