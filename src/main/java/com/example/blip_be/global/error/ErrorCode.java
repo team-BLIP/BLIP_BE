@@ -13,6 +13,7 @@ public enum ErrorCode {
 
     USER_NOT_FOUND(404, "User Not Found"),
     REFRESH_TOKEN_NOT_FOUND(404, "Refresh Token Not Found"),
+    TEAM_NOT_FOUND(404, "Team Not Found"),
 
     USER_EXIST(409, "User Exist"),
 
