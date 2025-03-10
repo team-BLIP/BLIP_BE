@@ -6,59 +6,46 @@ import com.example.blip_be.global.exception.ExpiredTokenException;
 import com.example.blip_be.global.exception.InvalidTokenException;
 import com.example.blip_be.global.security.auth.AuthDetailsService;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.crypto.spec.SecretKeySpec;
-import java.util.Base64;
 import java.util.Date;
 
-@Component
 @RequiredArgsConstructor
+@Component
 public class JwtTokenProvider {
 
-    private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
-
-    private final JwtProperties jwtProperties;
-    private final AuthDetailsService authDetailsService;
+    private final JwtProperties jwtProperty;
     private final RefreshTokenRepository refreshTokenRepository;
-
-    private SecretKeySpec secretKeySpec;
-
-    @PostConstruct
-    public void initSecretKeySpec() {
-        this.secretKeySpec = new SecretKeySpec(jwtProperties.getSecretKey().getBytes(), SignatureAlgorithm.HS256.getJcaName());
-    }
+    private final AuthDetailsService authDetailsService;
+    private static final Logger logger = LoggerFactory.getLogger(JwtTokenFilter.class);
 
     public String generateAccessToken(String accountId) {
-        String token = generateToken(accountId, "access", jwtProperties.getAccessExp());
-        return token;
+        return generateToken(accountId, "access", jwtProperty.getAccessExp());
     }
 
     public String generateRefreshToken(String accountId) {
-        String refreshToken = generateToken(accountId, "refresh", jwtProperties.getRefreshExp());
+        String refreshToken = generateToken(accountId, "refresh", jwtProperty.getRefreshExp());
         refreshTokenRepository.save(RefreshToken.builder()
                 .accountId(accountId)
                 .token(refreshToken)
-                .ttl(jwtProperties.getRefreshExp())
                 .build());
+
         return refreshToken;
+
     }
 
-    public String generateToken(String accountId, String type, Long exp) {
-        logger.debug("계정 ID: {}에 대해 토큰 생성 중. 유형: {}, 만료 시간: {}초", accountId, type, exp);
+    private String generateToken(String accountId, String type, Long exp) {
         return Jwts.builder()
-                .signWith(secretKeySpec)
+                .signWith(SignatureAlgorithm.HS256, jwtProperty.getSecretKey())
                 .setSubject(accountId)
                 .claim("type", type)
                 .setIssuedAt(new Date())
@@ -67,38 +54,34 @@ public class JwtTokenProvider {
     }
 
     public String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(jwtProperties.getHeader());
-        return parseToken(bearerToken);
-    }
-
-    public Authentication authentication(String token) {
-        UserDetails userDetails = authDetailsService.loadUserByUsername(token);
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        String bearer = request.getHeader(jwtProperty.getHeader());
+        return parseToken(bearer);
     }
 
     public String parseToken(String bearerToken) {
-
-        if (bearerToken != null && bearerToken.startsWith(jwtProperties.getPrefix())) {
-            return bearerToken.replace(jwtProperties.getPrefix(), "").trim();
+        if(bearerToken != null && bearerToken.startsWith(jwtProperty.getPrefix())) {
+            return bearerToken.replace(jwtProperty.getPrefix(), "");
         }
         return null;
     }
 
-    private Claims getTokenBody(String token) {
-        try {
-            return Jwts.parserBuilder()
-                    .setSigningKey(secretKeySpec)
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-        } catch (ExpiredJwtException e) {
-            throw ExpiredTokenException.EXCEPTION;
-        } catch (Exception e) {
-            throw InvalidTokenException.EXCEPTION;
-        }
+    public Authentication authentication(String token) {
+        UserDetails userDetails = authDetailsService.loadUserByUsername(getTokenSubject(token));
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     private String getTokenSubject(String token) {
         return getTokenBody(token).getSubject();
+    }
+
+    private Claims getTokenBody(String token) {
+        try {
+            return Jwts.parser().setSigningKey(jwtProperty.getSecretKey())
+                    .parseClaimsJws(token).getBody();
+        } catch (io.jsonwebtoken.ExpiredJwtException e){
+            throw ExpiredTokenException.EXCEPTION;
+        } catch (Exception e) {
+            throw InvalidTokenException.EXCEPTION;
+        }
     }
 }

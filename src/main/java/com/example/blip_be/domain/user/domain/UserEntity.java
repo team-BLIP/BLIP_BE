@@ -1,15 +1,19 @@
 package com.example.blip_be.domain.user.domain;
 
+import com.example.blip_be.global.enums.Role;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,14 +28,23 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = true)
     private String voiceDataPath;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role = Role.USER;
+
+
     @Builder
-    public User(String accountId, String password, String email, String voiceDataPath) {
+    public UserEntity(String accountId, String password, String email, String voiceDataPath, Role role) {
         this.accountId = accountId;
         this.password = password;
         this.email = email;
         this.voiceDataPath = voiceDataPath;
+        this.role = role == null ? Role.USER : role;
+    }
+
+    public void updateRole(Role newRole) {
+        this.role = newRole;
     }
 }

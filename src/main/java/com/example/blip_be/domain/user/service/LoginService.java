@@ -1,7 +1,7 @@
 package com.example.blip_be.domain.user.service;
 
 import com.example.blip_be.domain.auth.presentation.dto.TokenResponse;
-import com.example.blip_be.domain.user.domain.User;
+import com.example.blip_be.domain.user.domain.UserEntity;
 import com.example.blip_be.domain.user.domain.repository.UserRepository;
 import com.example.blip_be.domain.user.exception.PasswordMismatchedException;
 import com.example.blip_be.domain.user.exception.UserNotFoundException;
@@ -27,7 +27,7 @@ public class LoginService {
     public TokenResponse login(LoginRequest request) {
         logger.info("로그인 요청 - 이메일: {}", request.getEmail());
 
-        User user = userRepository.findByEmail(request.getEmail())
+        UserEntity user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> {
                     logger.error("사용자 없음 - 이메일: {}", request.getEmail());
                     return UserNotFoundException.EXCEPTION;
@@ -38,14 +38,14 @@ public class LoginService {
             throw PasswordMismatchedException.EXCEPTION;
         }
 
-        String accessToken = jwtTokenProvider.generateAccessToken(user.getAccountId());
-        String refreshToken = jwtTokenProvider.generateRefreshToken(user.getAccountId());
+        String accessToken = jwtTokenProvider.generateAccessToken(user.getEmail());
+//        String refreshToken = jwtTokenProvider.generateRefreshToken(user.getEmail());
 
         logger.info("로그인 성공 - 이메일: {}", request.getEmail());
 
         return TokenResponse.builder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken)
+//                .refreshToken(refreshToken)
                 .build();
     }
 }
