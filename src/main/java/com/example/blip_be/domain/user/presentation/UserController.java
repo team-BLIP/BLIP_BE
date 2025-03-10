@@ -20,12 +20,7 @@ public class UserController {
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public void signUp(
-            @RequestPart("account_id") String accountId,
-            @RequestPart("password") String password,
-            @RequestPart("email") String email
-    ) {
-        SignUpRequest request = new SignUpRequest(accountId, password, email);
+    public void signUp(@RequestBody SignUpRequest request) {
         signUpService.registerUser(request);
     }
 
