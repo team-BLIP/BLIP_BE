@@ -1,7 +1,7 @@
 package com.example.blip_be.domain.team.presentation.dto.response;
 
-import com.example.blip_be.domain.meeting.domain.MeetingFeedback;
-import com.example.blip_be.domain.meeting.domain.MeetingParticipation;
+//import com.example.blip_be.domain.meeting.domain.MeetingFeedback;
+//import com.example.blip_be.domain.meeting.domain.MeetingParticipation;
 import com.example.blip_be.domain.meeting.domain.MeetingSummary;
 import com.example.blip_be.domain.team.domain.TeamMember;
 import lombok.Builder;
@@ -24,11 +24,11 @@ public class CreateTeamResponse {
 
     private final LocalDateTime createAt;
 
-    private final MeetingFeedback meetingFeedback;
+//    private final MeetingFeedback meetingFeedback;
 
     private final MeetingSummary meetingSummary;
 
-    private final MeetingParticipation meetingParticipation;
+//    private final MeetingParticipation meetingParticipation;
 
     private final List<TeamMember> teamMember;
 
