@@ -3,6 +3,7 @@ package com.example.blip_be.domain.auth.presentation;
 import com.example.blip_be.domain.email.service.MailService;
 import com.example.blip_be.domain.email.service.RedisEmailAuthentication;
 import jakarta.mail.MessagingException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class AuthController {
 
     @PostMapping("/send")
     @ResponseStatus(HttpStatus.OK)
-    public void sendVerificationCode(@RequestParam String email) throws MessagingException {
+    public void sendVerificationCode(@RequestParam @Valid String email) throws MessagingException {
         mailService.sendVerificationEmail(email);
     }
 
