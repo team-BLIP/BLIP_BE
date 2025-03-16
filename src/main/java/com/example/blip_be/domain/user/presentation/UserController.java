@@ -20,11 +20,7 @@ public class UserController {
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-<<<<<<< HEAD
     public void signUp(@RequestBody SignUpRequest request) {
-=======
-    public void signUp(@RequestBody @Valid SignUpRequest request) {
->>>>>>> origin/featur/video-call
         signUpService.registerUser(request);
     }
 

@@ -28,19 +28,16 @@ public class UserEntity {
     @Column(nullable = false, unique = true)
     private String email;
 
-    private String voiceDataPath;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role = Role.USER;
 
 
     @Builder
-    public UserEntity(String accountId, String password, String email, String voiceDataPath, Role role) {
+    public UserEntity(String accountId, String password, String email, Role role) {
         this.accountId = accountId;
         this.password = password;
         this.email = email;
-        this.voiceDataPath = voiceDataPath;
         this.role = role == null ? Role.USER : role;
     }
 
