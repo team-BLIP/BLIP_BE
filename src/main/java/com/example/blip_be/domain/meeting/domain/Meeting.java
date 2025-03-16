@@ -30,6 +30,8 @@ public class Meeting {
     @NotNull
     private LocalDateTime endTime;
 
+    private String fileUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private Team team;
@@ -37,17 +39,21 @@ public class Meeting {
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MeetingFeedback> feedbacks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MeetingParticipation> participations = new ArrayList<>();
 
     @OneToOne(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true)
     private MeetingSummary meetingSummary;
 
+    private boolean isStarted = false;
+
     @Builder
-    public Meeting(String topic, LocalDateTime startTime, LocalDateTime endTime, Team team) {
+    public Meeting(String topic, LocalDateTime startTime, LocalDateTime endTime, Team team, String fileUrl) {
         this.topic = topic;
         this.startTime = startTime;
         this.endTime = endTime;
         this.team = team;
+        this.fileUrl = fileUrl;
     }
 }
+

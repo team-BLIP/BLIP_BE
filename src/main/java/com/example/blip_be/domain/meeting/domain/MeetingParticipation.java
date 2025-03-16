@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,19 +20,19 @@ public class MeetingParticipation {
     private Long id;
 
     @NotNull
-    private double participationRate;
+    private BigDecimal rate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "meeting_id")
     private Meeting meeting;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
     @Builder
-    public MeetingParticipation(double participationRate, Meeting meeting, UserEntity user) {
-        this.participationRate = participationRate;
+    public MeetingParticipation(BigDecimal rate, Meeting meeting, UserEntity user) {
+        this.rate = rate;
         this.meeting = meeting;
         this.user = user;
     }

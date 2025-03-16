@@ -1,6 +1,6 @@
 package com.example.blip_be.domain.meeting.domain;
 
-import com.example.blip_be.domain.user.domain.UserEntity;
+import com.example.blip_be.domain.team.domain.Team;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -16,19 +16,20 @@ public class MeetingFeedback {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String content;
+    private String feedback;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "meeting_id")
     private Meeting meeting;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private UserEntity receiver;
+    @JoinColumn(name = "team_id")
+    private Team team;
+
     @Builder
-    public MeetingFeedback(Meeting meeting, String content, UserEntity receiver) {
+    public MeetingFeedback(Meeting meeting, String feedback) {
         this.meeting = meeting;
-        this.content = content;
-        this.receiver = receiver;
+        this.feedback = feedback;
     }
 }
+
