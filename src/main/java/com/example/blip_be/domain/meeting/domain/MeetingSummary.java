@@ -15,15 +15,15 @@ public class MeetingSummary {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "meeting_id")
     private Meeting meeting;
 
-    private String content;
+    private String summary;
 
     @Builder
-    public MeetingSummary(String content, Meeting meeting) {
-        this.content = content;
+    public MeetingSummary(Meeting meeting, String summary) {
         this.meeting = meeting;
+        this.summary = summary;
     }
 }
