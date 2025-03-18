@@ -3,8 +3,10 @@ package com.example.blip_be.domain.meeting.service;
 import com.example.blip_be.domain.file.service.FileUploadService;
 import com.example.blip_be.domain.meeting.domain.Meeting;
 import com.example.blip_be.domain.meeting.domain.MeetingFeedback;
+import com.example.blip_be.domain.meeting.domain.MeetingParticipation;
 import com.example.blip_be.domain.meeting.domain.MeetingSummary;
 import com.example.blip_be.domain.meeting.domain.repository.MeetingFeedbackRepository;
+import com.example.blip_be.domain.meeting.domain.repository.MeetingParticipationRepository;
 import com.example.blip_be.domain.meeting.domain.repository.MeetingRepository;
 import com.example.blip_be.domain.meeting.domain.repository.MeetingSummaryRepository;
 import com.example.blip_be.domain.meeting.presentation.dto.request.EndMeetingRequest;
@@ -25,11 +27,12 @@ public class EndMeetingService {
     private final MeetingRepository meetingRepository;
     private final MeetingFeedbackRepository meetingFeedbackRepository;
     private final MeetingSummaryRepository meetingSummaryRepository;
+//    private final MeetingParticipationRepository meetingParticipationRepository;
     private final FileUploadService fileUploadService;
     private final WebClientService webClientService;
 
     @Transactional
-    public EndMeetingResponse endMeeting(EndMeetingRequest request, MultipartFile recordingFile) {
+    public EndMeetingResponse endMeeting(EndMeetingRequest request, MultipartFile file) {
         Meeting meeting = meetingRepository.findById(request.getMeetingId())
                 .orElseThrow(() -> new IllegalArgumentException("찾을 수 없는 회의"));
 
@@ -39,7 +42,7 @@ public class EndMeetingService {
             throw new IllegalArgumentException("회의를 종료할 권한이 없습니다.");
         }
 
-        String fileUrl = fileUploadService.uploadVoiceFile(recordingFile);
+        String fileUrl = fileUploadService.uploadVoiceFile(file);
 
         meeting = Meeting.builder()
                 .fileUrl(fileUrl)
@@ -66,6 +69,7 @@ public class EndMeetingService {
 
         meetingFeedbackRepository.save(new MeetingFeedback(meeting, analysisResult.getFeedback()));
         meetingSummaryRepository.save(new MeetingSummary(meeting, analysisResult.getSummary()));
+//        meetingParticipationRepository.save(new MeetingParticipation(meeting, analysisResult.getRate()));
     }
 
 }

@@ -49,6 +49,7 @@ public class SignalingSocketHandler implements WebSocketHandler {
         logger.error("오류 발생 [{}]: {}", session.getId(), exception.getMessage());
     }
 
+
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         sessions.remove(session.getId());

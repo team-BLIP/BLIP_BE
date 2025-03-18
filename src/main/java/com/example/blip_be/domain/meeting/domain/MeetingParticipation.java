@@ -23,7 +23,7 @@ public class MeetingParticipation {
     private BigDecimal rate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "meeting_id")
+    @JoinColumn(name = "meeting_id") 
     private Meeting meeting;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,9 +31,8 @@ public class MeetingParticipation {
     private UserEntity user;
 
     @Builder
-    public MeetingParticipation(BigDecimal rate, Meeting meeting, UserEntity user) {
-        this.rate = rate;
+    public MeetingParticipation(Meeting meeting, BigDecimal rate) {
         this.meeting = meeting;
-        this.user = user;
+        this.rate = rate;
     }
 }

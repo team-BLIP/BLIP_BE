@@ -1,9 +1,11 @@
 package com.example.blip_be.domain.meeting.service;
 
 import com.example.blip_be.domain.meeting.domain.Meeting;
+//import com.example.blip_be.domain.meeting.domain.MeetingParticipation;
 import com.example.blip_be.domain.meeting.domain.MeetingParticipation;
+import com.example.blip_be.domain.meeting.domain.repository.MeetingParticipationRepository;
 import com.example.blip_be.domain.meeting.domain.repository.MeetingRepository;
-import com.example.blip_be.domain.meeting.domain.repository.MeetingParticipationRepository; // 추가된 부분
+//import com.example.blip_be.domain.meeting.domain.repository.MeetingParticipationRepository;
 import com.example.blip_be.domain.meeting.presentation.dto.request.JoinMeetingRequest;
 import com.example.blip_be.domain.meeting.presentation.dto.response.JoinMeetingResponse;
 import com.example.blip_be.domain.user.domain.UserEntity;
@@ -35,7 +37,6 @@ public class JoinMeetingService {
 
         MeetingParticipation participation = MeetingParticipation.builder()
                 .meeting(meeting)
-                .user(user)
                 .build();
 
         meetingParticipationRepository.save(participation);
