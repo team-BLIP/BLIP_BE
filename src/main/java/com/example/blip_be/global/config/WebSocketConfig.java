@@ -21,7 +21,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(signalingSocketHandler(), "/call").setAllowedOrigins("*");
+        registry.addHandler(signalingSocketHandler(), "/signaling").setAllowedOrigins("*");
     }
 
     @Bean
