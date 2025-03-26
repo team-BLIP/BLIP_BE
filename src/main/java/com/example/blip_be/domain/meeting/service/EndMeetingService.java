@@ -69,7 +69,6 @@ public class EndMeetingService {
 
         meetingFeedbackRepository.save(new MeetingFeedback(meeting, analysisResult.getFeedback()));
         meetingSummaryRepository.save(new MeetingSummary(meeting, analysisResult.getSummary()));
-//        meetingParticipationRepository.save(new MeetingParticipation(meeting, analysisResult.getRate()));
     }
 
 }
