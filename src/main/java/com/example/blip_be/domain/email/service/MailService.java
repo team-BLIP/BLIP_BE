@@ -36,8 +36,6 @@ public class MailService {
         message.setFrom(mail);
 
         mailSender.send(message);
-
-        logger.info("📧 인증 이메일 전송 완료 - 이메일: {}, 코드: {}", email, verificationCode);
     }
 
     private String generateVerificationCode() {
@@ -55,13 +53,6 @@ public class MailService {
     public boolean verifyCode(String email, String inputCode) {
         String storedCode = (String) redisTemplate.opsForHash().get(email, "verification_code");
         boolean isValid = storedCode != null && storedCode.equals(inputCode);
-
-        if (isValid) {
-            logger.info("✅ 인증 성공 - 이메일: {}, 입력 코드: {}", email, inputCode);
-        } else {
-            logger.warn("❌ 인증 실패 - 이메일: {}, 입력 코드: {}, 저장된 코드: {}", email, inputCode, storedCode);
-        }
-
         return isValid;
     }
 }
