@@ -26,10 +26,6 @@ public class MeetingParticipation {
     @JoinColumn(name = "meeting_id") 
     private Meeting meeting;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
-
     @Builder
     public MeetingParticipation(Meeting meeting, BigDecimal rate) {
         this.meeting = meeting;
