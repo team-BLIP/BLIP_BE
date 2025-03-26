@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/auth")
@@ -26,7 +27,7 @@ public class AuthController {
     @ResponseStatus(HttpStatus.OK)
     public void verifyCode(@RequestParam String email, @RequestParam String code) {
         if (!mailService.verifyCode(email, code)) {
-            throw new IllegalArgumentException("인증 코드가 올바르지 않습니다.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "인증코드가 일치하지 않습니다.");
         }
         redisEmailAuthentication.setEmailAuthenticationComplete(email);
     }
