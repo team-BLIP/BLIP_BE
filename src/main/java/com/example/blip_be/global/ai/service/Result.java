@@ -8,8 +8,6 @@ import java.math.BigDecimal;
 @Getter
 @AllArgsConstructor
 public class Result {
-
     private String feedback;
     private String summary;
-//    private BigDecimal rate;
 }
