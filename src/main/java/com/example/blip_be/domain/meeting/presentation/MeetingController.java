@@ -48,7 +48,8 @@ public class MeetingController {
     }
 
     @PostMapping("/end")
-    public EndMeetingResponse endMeeting(@RequestBody EndMeetingRequest request, MultipartFile file) {
+    @ResponseStatus(HttpStatus.OK)
+    public EndMeetingResponse endMeeting(@RequestBody @Valid EndMeetingRequest request, @RequestPart MultipartFile file) {
         return endMeetingService.endMeeting(request, file);
     }
 }
