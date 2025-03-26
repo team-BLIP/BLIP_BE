@@ -22,10 +22,6 @@ public class MeetingFeedback {
     @JoinColumn(name = "meeting_id")
     private Meeting meeting;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id")
-    private Team team;
-
     @Builder
     public MeetingFeedback(Meeting meeting, String feedback) {
         this.meeting = meeting;
