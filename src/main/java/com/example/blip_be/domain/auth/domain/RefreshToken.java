@@ -17,11 +17,4 @@ public class RefreshToken {
 
     @Indexed
     private String token;
-
-    private Long ttl;
-
-    public void updateToken(String token, Long ttl) {
-        this.token = token;
-        this.ttl = ttl;
-    }
 }
