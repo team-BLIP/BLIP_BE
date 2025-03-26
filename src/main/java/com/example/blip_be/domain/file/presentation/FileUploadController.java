@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/file")
 @RequiredArgsConstructor
@@ -15,9 +17,12 @@ public class FileUploadController {
 
     @PostMapping("/voice")
     @ResponseStatus(HttpStatus.CREATED)
-    public String uploadVoice(@RequestParam("file")MultipartFile file) {
-        fileUploadService.uploadVoiceFile(file);
-        return "음성 파일 업로드 성공";
+    public Map<String, String> uploadVoice(@RequestParam("file")MultipartFile file) {
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("파일이 비어 있습니다.");
+        }
+        String filePath = fileUploadService.uploadVoiceFile(file);
+        return Map.of("message", "음성 파일 업로드 성공", "filePath", filePath);
     }
 
     @PostMapping("/image")
