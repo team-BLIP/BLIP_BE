@@ -2,6 +2,7 @@ package com.example.blip_be.domain.meeting.domain;
 
 import com.example.blip_be.domain.team.domain.Team;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -54,6 +55,11 @@ public class Meeting {
         this.endTime = endTime;
         this.team = team;
         this.fileUrl = fileUrl;
+    }
+
+    @AssertTrue(message = "종료 시간은 시작 시간보다 뒤여야 합니다.")
+    private boolean isEndTimeAfterStartTime() {
+        return startTime == null || endTime == null || endTime.isAfter(startTime);
     }
 }
 
