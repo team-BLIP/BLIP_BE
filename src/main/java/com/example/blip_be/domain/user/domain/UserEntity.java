@@ -1,11 +1,15 @@
 package com.example.blip_be.domain.user.domain;
 
+import com.example.blip_be.domain.meeting.domain.Meeting;
 import com.example.blip_be.global.enums.Role;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -29,6 +33,9 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role = Role.USER;
+
+    @ManyToMany(mappedBy = "participants")
+    private List<Meeting> meetings = new ArrayList<>();
 
 
     @Builder
