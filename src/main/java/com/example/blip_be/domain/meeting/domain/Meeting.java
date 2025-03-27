@@ -39,15 +39,16 @@ public class Meeting {
     @JoinColumn(name = "team_id")
     private Team team;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
-
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MeetingFeedback> feedbacks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MeetingParticipation> participations = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(
+            name = "meeting_user",
+            joinColumns = @JoinColumn(name = "meeting_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<UserEntity> participants = new ArrayList<>();
 
     @OneToOne(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true)
     private MeetingSummary meetingSummary;
@@ -55,13 +56,12 @@ public class Meeting {
     private boolean isStarted = false;
 
     @Builder
-    public Meeting(String topic, LocalDateTime startTime, LocalDateTime endTime, Team team, String fileUrl, UserEntity user) {
+    public Meeting(String topic, LocalDateTime startTime, LocalDateTime endTime, Team team, String fileUrl) {
         this.topic = topic;
         this.startTime = startTime;
         this.endTime = endTime;
         this.team = team;
         this.fileUrl = fileUrl;
-        this.user = user;
     }
 
     @AssertTrue(message = "종료 시간은 시작 시간보다 뒤여야 합니다.")
