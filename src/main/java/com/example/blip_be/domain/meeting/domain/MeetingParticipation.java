@@ -19,16 +19,17 @@ public class MeetingParticipation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    private BigDecimal rate;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "meeting_id") 
     private Meeting meeting;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
+
     @Builder
-    public MeetingParticipation(Meeting meeting, BigDecimal rate) {
+    public MeetingParticipation(Meeting meeting, UserEntity user) {
         this.meeting = meeting;
-        this.rate = rate;
+        this.user = user;
     }
 }
