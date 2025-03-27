@@ -1,11 +1,7 @@
 package com.example.blip_be.domain.meeting.service;
 
 import com.example.blip_be.domain.meeting.domain.Meeting;
-//import com.example.blip_be.domain.meeting.domain.MeetingParticipation;
-import com.example.blip_be.domain.meeting.domain.MeetingParticipation;
-import com.example.blip_be.domain.meeting.domain.repository.MeetingParticipationRepository;
 import com.example.blip_be.domain.meeting.domain.repository.MeetingRepository;
-//import com.example.blip_be.domain.meeting.domain.repository.MeetingParticipationRepository;
 import com.example.blip_be.domain.meeting.presentation.dto.request.JoinMeetingRequest;
 import com.example.blip_be.domain.meeting.presentation.dto.response.JoinMeetingResponse;
 import com.example.blip_be.domain.user.domain.UserEntity;
@@ -21,7 +17,6 @@ public class JoinMeetingService {
 
     private final MeetingRepository meetingRepository;
     private final UserRepository userRepository;
-    private final MeetingParticipationRepository meetingParticipationRepository;
 
     @Transactional
     public JoinMeetingResponse joinMeeting(JoinMeetingRequest request) {
@@ -31,15 +26,13 @@ public class JoinMeetingService {
         UserEntity user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-        if (meetingParticipationRepository.existsByMeetingAndUser(meeting, user)) {
+        if (meetingRepository.existsByIdAndParticipantsContains(request.getMeetingId(), user)) {
             return new JoinMeetingResponse(meeting.getId(), user.getId(), "이미 참여한 회의");
         }
 
-        MeetingParticipation participation = MeetingParticipation.builder()
-                .meeting(meeting)
-                .build();
+        meeting.getParticipants().add(user);
+        meetingRepository.save(meeting);
 
-        meetingParticipationRepository.save(participation);
         return new JoinMeetingResponse(meeting.getId(), user.getId(), "성공적으로 참가");
     }
 }
