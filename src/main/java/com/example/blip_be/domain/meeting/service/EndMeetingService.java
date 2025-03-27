@@ -3,10 +3,8 @@ package com.example.blip_be.domain.meeting.service;
 import com.example.blip_be.domain.file.service.FileUploadService;
 import com.example.blip_be.domain.meeting.domain.Meeting;
 import com.example.blip_be.domain.meeting.domain.MeetingFeedback;
-import com.example.blip_be.domain.meeting.domain.MeetingParticipation;
 import com.example.blip_be.domain.meeting.domain.MeetingSummary;
 import com.example.blip_be.domain.meeting.domain.repository.MeetingFeedbackRepository;
-import com.example.blip_be.domain.meeting.domain.repository.MeetingParticipationRepository;
 import com.example.blip_be.domain.meeting.domain.repository.MeetingRepository;
 import com.example.blip_be.domain.meeting.domain.repository.MeetingSummaryRepository;
 import com.example.blip_be.domain.meeting.presentation.dto.request.EndMeetingRequest;
@@ -27,7 +25,6 @@ public class EndMeetingService {
     private final MeetingRepository meetingRepository;
     private final MeetingFeedbackRepository meetingFeedbackRepository;
     private final MeetingSummaryRepository meetingSummaryRepository;
-//    private final MeetingParticipationRepository meetingParticipationRepository;
     private final FileUploadService fileUploadService;
     private final WebClientService webClientService;
 
