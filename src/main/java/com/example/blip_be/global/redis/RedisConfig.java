@@ -30,8 +30,6 @@ public class RedisConfig {
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        logger.info("📌 Redis 연결 시도 - Host: {}, Port: {}", redisHost, redisPort);
-
         RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(redisHost, redisPort);
 
         LettuceClientConfiguration clientConfig = LettuceClientConfiguration.builder()
@@ -41,20 +39,16 @@ public class RedisConfig {
         LettuceConnectionFactory connectionFactory = new LettuceConnectionFactory(config, clientConfig);
         connectionFactory.afterPropertiesSet();
 
-        logger.info("✅ Redis 연결 성공 - Host: {}, Port: {}", redisHost, redisPort);
         return connectionFactory;
     }
 
     @Bean
     public RedisTemplate<String, Map<String, String>> redisEmailAuthenticationTemplate() {
-        logger.info("📌 RedisTemplate 생성...");
-
         RedisTemplate<String, Map<String, String>> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
         redisTemplate.setHashValueSerializer(new StringRedisSerializer());
 
-        logger.info("✅ RedisTemplate 설정 완료");
         return redisTemplate;
     }
 }
