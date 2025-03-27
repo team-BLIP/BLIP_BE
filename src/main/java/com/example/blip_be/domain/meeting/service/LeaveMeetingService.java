@@ -1,8 +1,6 @@
 package com.example.blip_be.domain.meeting.service;
 
 import com.example.blip_be.domain.meeting.domain.Meeting;
-import com.example.blip_be.domain.meeting.domain.MeetingParticipation;
-import com.example.blip_be.domain.meeting.domain.repository.MeetingParticipationRepository;
 import com.example.blip_be.domain.meeting.domain.repository.MeetingRepository;
 import com.example.blip_be.domain.meeting.presentation.dto.request.LeaveMeetingRequest;
 import com.example.blip_be.domain.meeting.presentation.dto.response.LeaveMeetingResponse;
@@ -18,7 +16,6 @@ import org.springframework.stereotype.Service;
 public class LeaveMeetingService {
 
     private final MeetingRepository meetingRepository;
-    private final MeetingParticipationRepository meetingParticipationRepository;
     private final UserRepository userRepository;
 
     @Transactional
@@ -29,10 +26,12 @@ public class LeaveMeetingService {
         UserEntity user = userRepository.findById(request.getUserId())
                 .orElseThrow(()-> UserNotFoundException.EXCEPTION);
 
-        MeetingParticipation participation = meetingParticipationRepository.findByMeetingAndUser(meeting, user)
-                .orElseThrow(()-> new IllegalArgumentException("회의 참여 기록을 찾을 수 없음"));
+        if (!meetingRepository.existsByIdAndParticipantsContains(request.getMeetingId(), user)) {
+            return new LeaveMeetingResponse(meeting.getId(), user.getId(), "참여중인 회의가 아님");
+        }
 
-        meetingParticipationRepository.delete(participation);
+        meeting.getParticipants().remove(user);
+        meetingRepository.save(meeting);
 
         return new LeaveMeetingResponse(meeting.getId(), user.getId(), "회의에서 나감");
     }
