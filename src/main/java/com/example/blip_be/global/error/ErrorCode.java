@@ -7,6 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ErrorCode {
 
+    FAILED_FILE_UPLOAD(400, "Failed to upload file"),
+
     EXPIRED_TOKEN(401, "Expired Token"),
     INVALID_TOKEN(401, "Invalid Token"),
     PASSWORD_MISMATCHED(401, "Password Mismatched"),
