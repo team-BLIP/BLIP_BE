@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/file")
+@RequestMapping("/files")
 @RequiredArgsConstructor
 public class FileUploadController {
 

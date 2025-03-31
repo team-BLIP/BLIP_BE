@@ -22,7 +22,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class FileUploadService {
 
-    private final AmazonS3 AmazonS3Client;
     private final AmazonS3 amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")
@@ -33,7 +32,6 @@ public class FileUploadService {
 
     @Value("${cloud.aws.s3.image-path}")
     private String image;
-
 
     public String uploadFile(MultipartFile file, String filePath, String fileType) {
         if (file.isEmpty()) {
