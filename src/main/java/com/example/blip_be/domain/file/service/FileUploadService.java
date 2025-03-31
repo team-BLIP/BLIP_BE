@@ -2,6 +2,7 @@ package com.example.blip_be.domain.file.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.example.blip_be.domain.file.exception.FailedFileUploadException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
@@ -34,14 +35,14 @@ public class FileUploadService {
     private String image;
 
 
-    public String uploadFile(MultipartFile file, String filePath, String fileType) throws FileUploadException {
+    public String uploadFile(MultipartFile file, String filePath, String fileType) {
         if (file.isEmpty()) {
-            throw new FileUploadException("빈" + fileType + "파일입니다.");
+            throw FailedFileUploadException.EXCEPTION;
         }
 
         String contentType = file.getContentType();
         if (contentType == null || !contentType.startsWith(fileType)) {
-            throw new FileUploadException("지원되지 않는" + fileType + "파일 형식입니다.");
+            throw FailedFileUploadException.EXCEPTION;
         }
 
         try {
@@ -56,15 +57,15 @@ public class FileUploadService {
             amazonS3Client.putObject(bucketName, key, file.getInputStream(), metadata);
             return key;
         } catch (IOException e) {
-            throw new FileUploadException("파일 업로드 실패");
+            throw FailedFileUploadException.EXCEPTION;
         }
     }
 
-    public String uploadAudioFile(MultipartFile file) throws FileUploadException {
+    public String uploadAudioFile(MultipartFile file) {
         return uploadFile(file, audio, "audio");
     }
 
-    public String uploadImageFile(MultipartFile file) throws FileUploadException {
+    public String uploadImageFile(MultipartFile file) {
         return uploadFile(file, image, "image");
     }
 }
