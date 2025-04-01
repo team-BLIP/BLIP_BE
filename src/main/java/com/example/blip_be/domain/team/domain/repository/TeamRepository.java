@@ -10,6 +10,10 @@ import java.util.UUID;
 @Repository
 public interface TeamRepository extends JpaRepository<Team, Long> {
 
-    Optional<Team> findById(Long teamId);
+    Optional<Team> findById(Long id);
     Optional<Team> findByInviteLink(String inviteLink);
+
+    boolean existsById(Long id);
+
+    void deleteById(Long id);
 }
