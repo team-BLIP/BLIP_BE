@@ -24,11 +24,7 @@ public class CreateTeamResponse {
 
     private final LocalDateTime createAt;
 
-//    private final MeetingFeedback meetingFeedback;
-
     private final MeetingSummary meetingSummary;
-
-//    private final MeetingParticipation meetingParticipation;
 
     private final List<TeamMember> teamMember;
 

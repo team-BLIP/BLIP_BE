@@ -9,6 +9,5 @@ import java.util.UUID;
 @Builder
 public class TeamJoinRequest {
 
-
     private final String inviteLink;
 }
