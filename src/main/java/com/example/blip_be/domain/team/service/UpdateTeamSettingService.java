@@ -14,6 +14,18 @@ public class UpdateTeamSettingService {
 
     private final TeamRepository teamRepository;
 
+    /**
+     * Updates the name of an existing team.
+     *
+     * <p>Validates that the new team name provided in the request is not null, retrieves the team by its ID, and updates its name.
+     * The team's name is logged before and after the update. If the new name is null, an IllegalArgumentException is thrown;
+     * if the team is not found, a TeamNotFoundException is thrown.
+     *
+     * @param teamId the identifier of the team to update
+     * @param request an object containing the new team name
+     * @throws IllegalArgumentException if the new team name is null
+     * @throws TeamNotFoundException if no team exists with the provided teamId
+     */
     @Transactional
     public void updateTeam(Long teamId, UpdateTeamSettingRequest request) {
 
