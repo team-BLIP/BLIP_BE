@@ -39,6 +39,18 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Configures the application's security filter chain.
+     *
+     * <p>This method sets up Spring Security to operate with stateless session management by disabling CSRF protection
+     * and form-based login, while enabling CORS using default settings. It permits requests to public endpoints specified
+     * in the PERMIT_ALL_URL array and requires authentication for specific HTTP methods on "/teams/**", "/meetings/**",
+     * and "/invite/**" endpoints. Additionally, it integrates a JWT token validation filter and an exception handling filter
+     * into the filter chain.</p>
+     *
+     * @return the configured SecurityFilterChain
+     * @throws Exception if an error occurs during the configuration of the security filter chain
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
          http
@@ -51,10 +63,10 @@ public class SecurityConfig {
                                 .requestMatchers(PERMIT_ALL_URL).permitAll()
                                 .requestMatchers(HttpMethod.GET, "/teams/**").authenticated()
                                 .requestMatchers(HttpMethod.POST, "/teams/**").authenticated()
-                                .requestMatchers(HttpMethod.PUT, "/teams/**").hasAnyAuthority(Permission.UPDATE.getPermission())
-                                .requestMatchers(HttpMethod.DELETE, "/teams/**").hasAnyAuthority(Permission.DELETE.getPermission())
-                                .requestMatchers(HttpMethod.GET, "/meetings/**").hasAnyAuthority(Permission.MEETING_MANAGEMENT.getPermission())
-                                .requestMatchers(HttpMethod.POST, "/invite/**").hasAnyAuthority(Permission.INVITE_TEAM_MEMBER.getPermission())
+                                .requestMatchers(HttpMethod.PATCH, "/teams/**").authenticated()
+                                .requestMatchers(HttpMethod.DELETE, "/teams/**").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/meetings/**").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/invite/**").authenticated()
                 )
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new ExceptionFilter(objectMapper), JwtTokenFilter.class);
