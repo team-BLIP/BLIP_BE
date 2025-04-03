@@ -39,6 +39,18 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Configures the application's security filter chain.
+     *
+     * <p>This method sets up Spring Security to operate with stateless session management by disabling CSRF protection
+     * and form-based login, while enabling CORS using default settings. It permits requests to public endpoints specified
+     * in the PERMIT_ALL_URL array and requires authentication for specific HTTP methods on "/teams/**", "/meetings/**",
+     * and "/invite/**" endpoints. Additionally, it integrates a JWT token validation filter and an exception handling filter
+     * into the filter chain.</p>
+     *
+     * @return the configured SecurityFilterChain
+     * @throws Exception if an error occurs during the configuration of the security filter chain
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
          http
