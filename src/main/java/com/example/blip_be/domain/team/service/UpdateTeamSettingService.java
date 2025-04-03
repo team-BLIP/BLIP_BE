@@ -24,9 +24,6 @@ public class UpdateTeamSettingService {
         Team team = teamRepository.findById(teamId)
                         .orElseThrow(()-> TeamNotFoundException.EXCEPTION);
 
-        System.out.println("Before update: " + team.getTeamName());
         team.updateTeam(request.getNewName());
-        System.out.println("After update: " + team.getTeamName());
-
     }
 }
