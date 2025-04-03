@@ -59,13 +59,15 @@ jwt:
 
 cloud:
   aws:
-    s3:
-      bucket: ${AWS_NAME}
-    stack.auto: false
-    region.static: ap-northeast-2
     credentials:
-      accessKey: ${AWS_ACCESS}
-      secretKey: ${AWS_SECRET}
+      access-key: ${AWS_ACCESS}
+      secret-key: ${AWS_SECRET}
+    region:
+      static: ${AWS_REGION}
+    s3:
+      bucket: ${AWS_BUCKET_NAME}
+      audio-path: ${AUDIO_PATH}
+      image-path: ${IMAGE_PATH}
 
 logging:
   level:

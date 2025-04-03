@@ -39,7 +39,7 @@ public class EndMeetingService {
             throw new IllegalArgumentException("회의를 종료할 권한이 없습니다.");
         }
 
-        String fileUrl = fileUploadService.uploadVoiceFile(file);
+        String fileUrl = fileUploadService.uploadAudioFile(file);
 
         meeting = Meeting.builder()
                 .fileUrl(fileUrl)
