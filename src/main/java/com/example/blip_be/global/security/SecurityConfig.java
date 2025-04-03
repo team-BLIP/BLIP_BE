@@ -49,6 +49,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize ->
                         authorize
                                 .requestMatchers(PERMIT_ALL_URL).permitAll()
+                                .requestMatchers("/files/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/teams/**").authenticated()
                                 .requestMatchers(HttpMethod.POST, "/teams/**").authenticated()
                                 .requestMatchers(HttpMethod.PUT, "/teams/**").hasAnyAuthority(Permission.UPDATE.getPermission())
