@@ -1,7 +1,5 @@
 package com.example.blip_be.domain.team.presentation.dto.response;
 
-//import com.example.blip_be.domain.meeting.domain.MeetingFeedback;
-//import com.example.blip_be.domain.meeting.domain.MeetingParticipation;
 import com.example.blip_be.domain.meeting.domain.MeetingSummary;
 import com.example.blip_be.domain.team.domain.TeamMember;
 import lombok.Builder;
