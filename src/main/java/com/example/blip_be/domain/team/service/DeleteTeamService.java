@@ -28,9 +28,6 @@ public class DeleteTeamService {
         if (!teamRepository.existsById(teamId)) {
             throw TeamNotFoundException.EXCEPTION;
         }
-
-        teamMemberRepository.deleteByTeamId(teamId);
-
         teamRepository.deleteById(teamId);
     }
 }
