@@ -30,7 +30,6 @@ public class Meeting {
     @NotNull
     private LocalDateTime startTime;
 
-    @NotNull
     private LocalDateTime endTime;
 
     private String fileUrl;
@@ -55,18 +54,30 @@ public class Meeting {
 
     private boolean isStarted = false;
 
+    private String roomUrl;
+
     @Builder
-    public Meeting(String topic, LocalDateTime startTime, LocalDateTime endTime, Team team, String fileUrl) {
+    public Meeting(String topic, LocalDateTime startTime, Team team, String fileUrl, String roomUrl) {
         this.topic = topic;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.startTime = startTime != null ? startTime : LocalDateTime.now();
+        this.isStarted = true;
         this.team = team;
         this.fileUrl = fileUrl;
+        this.roomUrl = roomUrl;
     }
-
+    
     @AssertTrue(message = "종료 시간은 시작 시간보다 뒤여야 합니다.")
     private boolean isEndTimeAfterStartTime() {
         return startTime == null || endTime == null || endTime.isAfter(startTime);
     }
-}
 
+    public void endMeeting(String fileUrl, LocalDateTime endTime) {
+        this.fileUrl = fileUrl;
+        this.endTime = endTime;
+    }
+
+    public void applyAnalysisResult(String summary, String feedback) {
+        this.meetingSummary = new MeetingSummary(this, summary);
+        this.feedbacks.add(new MeetingFeedback(this, feedback));
+    }
+}

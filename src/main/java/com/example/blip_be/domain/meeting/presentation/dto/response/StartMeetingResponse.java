@@ -11,4 +11,5 @@ public class StartMeetingResponse {
 
     private Long meetingId;
     private LocalDateTime startTime;
+    private String roomUrl;
 }

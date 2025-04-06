@@ -19,6 +19,7 @@ public class MeetingSummary {
     @JoinColumn(name = "meeting_id")
     private Meeting meeting;
 
+    @Column(columnDefinition = "TEXT")
     private String summary;
 
     @Builder

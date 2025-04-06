@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -29,14 +30,23 @@ public class StartMeetingService {
             throw new IllegalArgumentException("회의를 시작할 권한이 없습니다.");
         }
 
+        // 팀 이름을 URL-friendly하게 변환
+        String teamName = team.getTeamName()
+                .toLowerCase()
+                .replaceAll("\\s+", "-")
+                .replaceAll("[^a-z0-9가-힣-]", "");
+
+        String generatedRoomUrl = "https://meet.jit.si/" + teamName + "-" + UUID.randomUUID();
+
         Meeting meeting = Meeting.builder()
                 .topic(request.getTopic())
                 .team(team)
                 .startTime(LocalDateTime.now())
+                .roomUrl(generatedRoomUrl)
                 .build();
 
         meetingRepository.save(meeting);
 
-        return new StartMeetingResponse(meeting.getId(), meeting.getStartTime());
+        return new StartMeetingResponse(meeting.getId(), meeting.getStartTime(), generatedRoomUrl);
     }
 }

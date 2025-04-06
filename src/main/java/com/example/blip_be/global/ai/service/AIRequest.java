@@ -7,6 +7,5 @@ import lombok.Getter;
 @Builder
 public class AIRequest {
 
-    private String meetingId;
-    private String fileUrl;
+    private String s3Url;
 }

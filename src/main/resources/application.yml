@@ -75,3 +75,7 @@ logging:
     org.springframework.data.redis: debug
     io.lettuce.core: debug
     org.springframework.boot.autoconfigure.data.redis: debug
+
+ai:
+  service:
+    url: ${AI_SERVER}
