@@ -13,9 +13,13 @@ import com.example.blip_be.domain.meeting.service.EndMeetingService;
 import com.example.blip_be.domain.meeting.service.JoinMeetingService;
 import com.example.blip_be.domain.meeting.service.LeaveMeetingService;
 import com.example.blip_be.domain.meeting.service.StartMeetingService;
+import com.example.blip_be.global.security.auth.AuthDetails;
+import com.example.blip_be.global.security.auth.AuthDetailsService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,9 +35,15 @@ public class MeetingController {
 
     @PostMapping("/start")
     @ResponseStatus(HttpStatus.OK)
-    public StartMeetingResponse startMeeting(@RequestBody @Valid StartMeetingRequest request) {
-        return startMeetingService.startMeeting(request);
+    public StartMeetingResponse startMeeting(
+            @RequestBody @Valid StartMeetingRequest request,
+            @AuthenticationPrincipal AuthDetails authDetails) {
+
+        Long leaderId = authDetails.getUser().getId();
+        return startMeetingService.startMeeting(request, leaderId);
     }
+
+
 
     @PostMapping("/join")
     @ResponseStatus(HttpStatus.OK)

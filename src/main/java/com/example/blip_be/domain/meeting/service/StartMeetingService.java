@@ -21,11 +21,11 @@ public class StartMeetingService {
     private final TeamRepository teamRepository;
 
     @Transactional
-    public StartMeetingResponse startMeeting(StartMeetingRequest request) {
+    public StartMeetingResponse startMeeting(StartMeetingRequest request, Long leaderId) {
         Team team = teamRepository.findById(request.getTeamId())
                 .orElseThrow(() -> new IllegalArgumentException("팀을 찾을 수 없습니다."));
 
-        if (!team.getLeader().getId().equals(request.getLeaderId())) {
+        if (!team.getLeader().getId().equals(leaderId)) {
             throw new IllegalArgumentException("회의를 시작할 권한이 없습니다.");
         }
 
