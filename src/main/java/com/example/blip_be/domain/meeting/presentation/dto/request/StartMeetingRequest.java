@@ -10,6 +10,5 @@ import java.time.LocalDateTime;
 public class StartMeetingRequest {
 
     private Long teamId;
-    private Long leaderId;
     private String topic;
 }
