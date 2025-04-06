@@ -7,6 +7,7 @@ import com.example.blip_be.domain.meeting.presentation.dto.request.EndMeetingReq
 import com.example.blip_be.domain.meeting.presentation.dto.response.EndMeetingResponse;
 import com.example.blip_be.domain.team.domain.Team;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -21,12 +22,15 @@ public class WebClientService {
 
     private final WebClient.Builder webClientBuilder;
 
+    @Value("${ai.service.url}")
+    private String aiServiceUrl;
+
     public WebClient createWebClient(String baseUrl) {
         return webClientBuilder.baseUrl(baseUrl).build();
     }
 
     public Mono<Result> analyzeMeeting(String s3Url) {
-        WebClient webClient = createWebClient("http://3.35.180.21/");
+        WebClient webClient = createWebClient(aiServiceUrl);
 
         return webClient.post()
                 .uri("/meeting")
