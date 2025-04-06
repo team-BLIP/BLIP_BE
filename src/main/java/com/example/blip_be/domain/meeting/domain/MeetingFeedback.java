@@ -16,6 +16,7 @@ public class MeetingFeedback {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(columnDefinition = "TEXT")
     private String feedback;
 
     @ManyToOne(fetch = FetchType.LAZY)
