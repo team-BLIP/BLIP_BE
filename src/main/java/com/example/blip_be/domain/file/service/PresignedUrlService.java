@@ -1,4 +1,4 @@
-package com.example.blip_be.global.ai.service;
+package com.example.blip_be.domain.file.service;
 
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;

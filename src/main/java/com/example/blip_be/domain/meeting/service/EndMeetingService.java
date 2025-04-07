@@ -4,9 +4,11 @@ import com.example.blip_be.domain.meeting.domain.Meeting;
 import com.example.blip_be.domain.meeting.domain.repository.MeetingRepository;
 import com.example.blip_be.domain.meeting.presentation.dto.response.EndMeetingResponse;
 import com.example.blip_be.domain.team.domain.Team;
-import com.example.blip_be.global.ai.service.PresignedUrlService;
+import com.example.blip_be.domain.file.service.PresignedUrlService;
+import com.example.blip_be.global.ai.service.AIRequest;
 import com.example.blip_be.global.ai.service.Result;
 import com.example.blip_be.global.ai.service.WebClientService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,6 +52,14 @@ public class EndMeetingService {
 
         LocalDateTime endTime = LocalDateTime.now();
         meeting.endMeeting(fileUrl, endTime);
+
+        try {
+            System.out.println("보내는 URL: " + fileUrl);
+            String json = new ObjectMapper().writeValueAsString(new AIRequest(fileUrl));
+            System.out.println("보내는 JSON: " + json);
+        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+            e.printStackTrace();
+        }
 
         Result result = webClientService.analyzeMeeting(fileUrl).block();
         meeting.applyAnalysisResult(result.getSummary(), result.getFeedback());
