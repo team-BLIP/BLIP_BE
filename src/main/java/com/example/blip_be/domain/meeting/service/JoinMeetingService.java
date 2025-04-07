@@ -2,7 +2,6 @@ package com.example.blip_be.domain.meeting.service;
 
 import com.example.blip_be.domain.meeting.domain.Meeting;
 import com.example.blip_be.domain.meeting.domain.repository.MeetingRepository;
-import com.example.blip_be.domain.meeting.presentation.dto.request.JoinMeetingRequest;
 import com.example.blip_be.domain.meeting.presentation.dto.response.JoinMeetingResponse;
 import com.example.blip_be.domain.user.domain.UserEntity;
 import com.example.blip_be.domain.user.domain.repository.UserRepository;
@@ -19,20 +18,20 @@ public class JoinMeetingService {
     private final UserRepository userRepository;
 
     @Transactional
-    public JoinMeetingResponse joinMeeting(JoinMeetingRequest request) {
-        Meeting meeting = meetingRepository.findById(request.getMeetingId())
+    public JoinMeetingResponse joinMeeting(Long meetingId, Long userId) {
+        Meeting meeting = meetingRepository.findById(meetingId)
                 .orElseThrow(() -> new RuntimeException("찾을 수 없는 회의"));
 
-        UserEntity user = userRepository.findById(request.getUserId())
+        UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
-        if (meetingRepository.existsByIdAndParticipantsContains(request.getMeetingId(), user)) {
-            return new JoinMeetingResponse(meeting.getId(), user.getId(), "이미 참여한 회의");
+        if (meetingRepository.existsByIdAndParticipantsContains(meetingId, user)) {
+            return new JoinMeetingResponse("이미 참여한 회의");
         }
 
         meeting.getParticipants().add(user);
         meetingRepository.save(meeting);
 
-        return new JoinMeetingResponse(meeting.getId(), user.getId(), "성공적으로 참가");
+        return new JoinMeetingResponse("성공적으로 참가");
     }
 }

@@ -30,7 +30,6 @@ public class StartMeetingService {
             throw new IllegalArgumentException("회의를 시작할 권한이 없습니다.");
         }
 
-        // 팀 이름을 URL-friendly하게 변환
         String teamName = team.getTeamName()
                 .toLowerCase()
                 .replaceAll("\\s+", "-")
