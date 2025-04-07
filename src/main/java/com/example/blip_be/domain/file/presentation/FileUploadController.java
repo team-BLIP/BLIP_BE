@@ -41,6 +41,12 @@ public class FileUploadController {
         return ResponseEntity.ok(presignedUrl.toString());
     }
 
+    @GetMapping("/download-url")
+    public String generateDownloadUrl(@RequestParam("fileName") String fileName) {
+        URL downloadUrl = presignedUrlService.generatePresignedDownloadUrl(fileName);
+        return downloadUrl.toString();
+    }
+
     @PostMapping("/image")
     @ResponseStatus(HttpStatus.CREATED)
     public FileUploadResponse uploadImage(@RequestParam("file") MultipartFile file) {

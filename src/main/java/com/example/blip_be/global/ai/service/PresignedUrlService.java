@@ -29,4 +29,15 @@ public class PresignedUrlService {
 
         return amazonS3.generatePresignedUrl(request);
     }
+
+    public URL generatePresignedDownloadUrl(String fileName) {
+        Date expiration = new Date();
+        expiration.setTime(expiration.getTime() + 1000 * 60 * 10);
+
+        GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(bucketName, fileName)
+                .withMethod(HttpMethod.GET)
+                .withExpiration(expiration);
+
+        return amazonS3.generatePresignedUrl(request);
+    }
 }

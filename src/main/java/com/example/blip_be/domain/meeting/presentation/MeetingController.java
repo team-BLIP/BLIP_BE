@@ -43,8 +43,6 @@ public class MeetingController {
         return startMeetingService.startMeeting(request, leaderId);
     }
 
-
-
     @PostMapping("/join")
     @ResponseStatus(HttpStatus.OK)
     public JoinMeetingResponse joinMeeting(@RequestBody @Valid JoinMeetingRequest request) {
