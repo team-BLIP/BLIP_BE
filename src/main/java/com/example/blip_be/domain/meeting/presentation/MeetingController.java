@@ -53,8 +53,8 @@ public class MeetingController {
 
     @PostMapping("/end/{meeting-id}")
     @ResponseStatus(HttpStatus.OK)
-    public EndMeetingResponse endMeeting(@RequestPart @Valid MultipartFile file, @AuthenticationPrincipal AuthDetails authDetails, @PathVariable ("meeting-id") Long meetingId) {
+    public EndMeetingResponse endMeeting(@AuthenticationPrincipal AuthDetails authDetails, @PathVariable ("meeting-id") Long meetingId) {
         Long leaderId = authDetails.getUser().getId();
-        return endMeetingService.endMeeting(file, leaderId, meetingId);
+        return endMeetingService.endMeeting(leaderId, meetingId);
     }
 }

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Builder
 public class EndMeetingResponse {
 
-    private Long meetingId;
     private LocalDateTime endTime;
     private String fileUrl;
+    private String presignedUrl;
 }
