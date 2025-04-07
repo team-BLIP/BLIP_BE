@@ -8,7 +8,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public class JoinMeetingResponse {
 
-    private Long meetingId;
-    private Long userId;
     private String status;
 }

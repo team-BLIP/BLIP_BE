@@ -1,9 +1,5 @@
 package com.example.blip_be.domain.meeting.presentation;
 
-import com.example.blip_be.domain.meeting.domain.Meeting;
-import com.example.blip_be.domain.meeting.presentation.dto.request.EndMeetingRequest;
-import com.example.blip_be.domain.meeting.presentation.dto.request.JoinMeetingRequest;
-import com.example.blip_be.domain.meeting.presentation.dto.request.LeaveMeetingRequest;
 import com.example.blip_be.domain.meeting.presentation.dto.request.StartMeetingRequest;
 import com.example.blip_be.domain.meeting.presentation.dto.response.EndMeetingResponse;
 import com.example.blip_be.domain.meeting.presentation.dto.response.JoinMeetingResponse;
@@ -14,12 +10,10 @@ import com.example.blip_be.domain.meeting.service.JoinMeetingService;
 import com.example.blip_be.domain.meeting.service.LeaveMeetingService;
 import com.example.blip_be.domain.meeting.service.StartMeetingService;
 import com.example.blip_be.global.security.auth.AuthDetails;
-import com.example.blip_be.global.security.auth.AuthDetailsService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,21 +37,24 @@ public class MeetingController {
         return startMeetingService.startMeeting(request, leaderId);
     }
 
-    @PostMapping("/join")
+    @PostMapping("/join/{meeting-id}")
     @ResponseStatus(HttpStatus.OK)
-    public JoinMeetingResponse joinMeeting(@RequestBody @Valid JoinMeetingRequest request) {
-        return joinMeetingService.joinMeeting(request);
+    public JoinMeetingResponse joinMeeting(@PathVariable ("meeting-id") Long meetingId, @AuthenticationPrincipal AuthDetails authDetails) {
+        Long userId = authDetails.getUser().getId();
+        return joinMeetingService.joinMeeting(meetingId, userId);
     }
 
-    @PostMapping("/leave")
+    @PostMapping("/leave/{meeting-id}")
     @ResponseStatus(HttpStatus.OK)
-    public LeaveMeetingResponse leaveMeeting(@RequestBody @Valid LeaveMeetingRequest request) {
-        return leaveMeetingService.leaveMeeting(request);
+    public LeaveMeetingResponse leaveMeeting(@AuthenticationPrincipal AuthDetails authDetails, @PathVariable ("meeting-id") Long meetingId) {
+        Long userId = authDetails.getUser().getId();
+        return leaveMeetingService.leaveMeeting(meetingId, userId);
     }
 
-    @PostMapping("/end")
+    @PostMapping("/end/{meeting-id}")
     @ResponseStatus(HttpStatus.OK)
-    public EndMeetingResponse endMeeting(@RequestBody @Valid EndMeetingRequest request, @RequestPart MultipartFile file) {
-        return endMeetingService.endMeeting(request, file);
+    public EndMeetingResponse endMeeting(@RequestPart @Valid MultipartFile file, @AuthenticationPrincipal AuthDetails authDetails, @PathVariable ("meeting-id") Long meetingId) {
+        Long leaderId = authDetails.getUser().getId();
+        return endMeetingService.endMeeting(file, leaderId, meetingId);
     }
 }
