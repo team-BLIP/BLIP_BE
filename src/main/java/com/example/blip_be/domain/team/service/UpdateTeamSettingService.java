@@ -24,6 +24,6 @@ public class UpdateTeamSettingService {
         Team team = teamRepository.findById(teamId)
                         .orElseThrow(()-> TeamNotFoundException.EXCEPTION);
 
-        team.updateTeam(request.getNewName());
+        team.updateTeam(request.getNewName(), request.getImageUrl());
     }
 }
