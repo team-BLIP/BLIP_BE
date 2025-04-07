@@ -1,6 +1,6 @@
 package com.example.blip_be.domain.file.presentation;
 
-import com.example.blip_be.global.ai.service.PresignedUrlService;
+import com.example.blip_be.domain.file.service.PresignedUrlService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

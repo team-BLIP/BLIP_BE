@@ -10,5 +10,4 @@ import java.math.BigDecimal;
 public class Result {
     private String summary;
     private String feedback;
-    private String time;
 }

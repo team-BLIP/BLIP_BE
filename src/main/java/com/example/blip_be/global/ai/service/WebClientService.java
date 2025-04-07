@@ -1,6 +1,7 @@
 package com.example.blip_be.global.ai.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -24,6 +25,7 @@ public class WebClientService {
 
         return webClient.post()
                 .uri("/meeting")
+                .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(new AIRequest(s3Url))
                 .retrieve()
                 .bodyToMono(Result.class);
