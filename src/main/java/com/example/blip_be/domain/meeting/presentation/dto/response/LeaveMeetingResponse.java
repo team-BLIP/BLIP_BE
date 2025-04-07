@@ -7,7 +7,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public class LeaveMeetingResponse {
 
-    private Long meetingId;
-    private Long userId;
     private String message;
 }
