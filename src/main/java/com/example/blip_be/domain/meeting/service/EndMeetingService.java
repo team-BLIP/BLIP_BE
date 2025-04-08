@@ -49,7 +49,7 @@ public class EndMeetingService {
         URL presignedPutUrl = presignedUrlService.generatePresignedUrl(key);
 
         String fileUrl = "https://" + bucketName + ".s3." + region + ".amazonaws.com/" + key;
-
+        
         LocalDateTime endTime = LocalDateTime.now();
         meeting.endMeeting(fileUrl, endTime);
 
