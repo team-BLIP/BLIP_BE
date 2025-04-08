@@ -52,15 +52,15 @@ public class TeamController {
         deleteTeamService.delete(teamId);
     }
 
-    @GetMapping("")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<TeamListResponse> getMyTeams(@AuthenticationPrincipal AuthDetails authDetails) {
         return teamQueryService.getMyTeams(authDetails.getUser().getId());
     }
 
-    @GetMapping("/{teamId}")
+    @GetMapping("/{team-id}")
     @ResponseStatus(HttpStatus.OK)
-    public TeamDetailResponse getTeamDetail(@PathVariable Long teamId) {
+    public TeamDetailResponse getTeamDetail(@PathVariable ("team-id")Long teamId) {
         return teamDetailService.getTeamDetail(teamId);
     }
 }
