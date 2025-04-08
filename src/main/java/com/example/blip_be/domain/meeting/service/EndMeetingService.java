@@ -53,14 +53,6 @@ public class EndMeetingService {
         LocalDateTime endTime = LocalDateTime.now();
         meeting.endMeeting(fileUrl, endTime);
 
-        try {
-            System.out.println("보내는 URL: " + fileUrl);
-            String json = new ObjectMapper().writeValueAsString(new AIRequest(fileUrl));
-            System.out.println("보내는 JSON: " + json);
-        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
         Result result = webClientService.analyzeMeeting(fileUrl).block();
         meeting.applyAnalysisResult(result.getSummary(), result.getFeedback());
 
