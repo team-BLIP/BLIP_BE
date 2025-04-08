@@ -1,6 +1,7 @@
 package com.example.blip_be.domain.user.domain;
 
 import com.example.blip_be.domain.meeting.domain.Meeting;
+import com.example.blip_be.domain.team.domain.Team;
 import com.example.blip_be.global.enums.Role;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -34,11 +35,19 @@ public class UserEntity {
     @Column(nullable = false)
     private Role role = Role.USER;
 
-    @ManyToMany(mappedBy = "participants")
-    private List<Meeting> meetings = new ArrayList<>();
-
     private String imageUrl;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "main_id")
+    private Team main;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_team",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "team_id")
+    )
+    private List<Team> teams = new ArrayList<>();
 
     @Builder
     public UserEntity(String accountId, String password, String email, Role role, String imageUrl) {
@@ -51,5 +60,9 @@ public class UserEntity {
 
     public void updateRole(Role newRole) {
         this.role = newRole;
+    }
+
+    public void updateMain(Team team) {
+        this.main = team;
     }
 }
