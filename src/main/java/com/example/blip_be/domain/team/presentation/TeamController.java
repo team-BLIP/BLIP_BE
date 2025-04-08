@@ -4,14 +4,17 @@ import com.example.blip_be.domain.team.presentation.dto.request.CreateTeamReques
 import com.example.blip_be.domain.team.presentation.dto.request.TeamJoinRequest;
 import com.example.blip_be.domain.team.presentation.dto.request.UpdateTeamSettingRequest;
 import com.example.blip_be.domain.team.presentation.dto.response.CreateTeamResponse;
-import com.example.blip_be.domain.team.service.DeleteTeamService;
-import com.example.blip_be.domain.team.service.TeamCreateService;
-import com.example.blip_be.domain.team.service.TeamJoinService;
-import com.example.blip_be.domain.team.service.UpdateTeamSettingService;
+import com.example.blip_be.domain.team.presentation.dto.response.TeamDetailResponse;
+import com.example.blip_be.domain.team.presentation.dto.response.TeamListResponse;
+import com.example.blip_be.domain.team.service.*;
+import com.example.blip_be.global.security.auth.AuthDetails;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/teams")
@@ -22,6 +25,8 @@ public class TeamController {
     private final TeamJoinService teamJoinService;
     private final UpdateTeamSettingService updateTeamSettingService;
     private final DeleteTeamService deleteTeamService;
+    private final TeamQueryService teamQueryService;
+    private final TeamDetailService teamDetailService;
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
@@ -45,5 +50,17 @@ public class TeamController {
     @ResponseStatus(HttpStatus.OK)
     public void deleteTeam(@PathVariable("team-id") Long teamId) {
         deleteTeamService.delete(teamId);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<TeamListResponse> getMyTeams(@AuthenticationPrincipal AuthDetails authDetails) {
+        return teamQueryService.getMyTeams(authDetails.getUser().getId());
+    }
+
+    @GetMapping("/{team-id}")
+    @ResponseStatus(HttpStatus.OK)
+    public TeamDetailResponse getTeamDetail(@PathVariable ("team-id")Long teamId) {
+        return teamDetailService.getTeamDetail(teamId);
     }
 }

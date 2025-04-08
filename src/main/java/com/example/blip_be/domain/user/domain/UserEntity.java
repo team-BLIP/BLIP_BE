@@ -37,13 +37,16 @@ public class UserEntity {
     @ManyToMany(mappedBy = "participants")
     private List<Meeting> meetings = new ArrayList<>();
 
+    private String imageUrl;
+
 
     @Builder
-    public UserEntity(String accountId, String password, String email, Role role) {
+    public UserEntity(String accountId, String password, String email, Role role, String imageUrl) {
         this.accountId = accountId;
         this.password = password;
         this.email = email;
         this.role = role == null ? Role.USER : role;
+        this.imageUrl = imageUrl;
     }
 
     public void updateRole(Role newRole) {
