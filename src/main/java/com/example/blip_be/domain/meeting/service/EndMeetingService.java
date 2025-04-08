@@ -62,6 +62,10 @@ public class EndMeetingService {
         }
 
         Result result = webClientService.analyzeMeeting(fileUrl).block();
+
+        System.out.println("요약: " + result.getSummary());
+        System.out.println("피드백: " + result.getFeedback());
+        
         meeting.applyAnalysisResult(result.getSummary(), result.getFeedback());
 
         meetingRepository.save(meeting);
