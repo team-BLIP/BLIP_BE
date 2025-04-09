@@ -56,6 +56,9 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.PATCH, "/teams/**").authenticated()
                                 .requestMatchers(HttpMethod.DELETE, "/teams/**").authenticated()
                                 .requestMatchers(HttpMethod.POST, "/meetings/**").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/teams/**/mypage").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/teams/**/feedbacks").authenticated()
+                        
                 )
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new ExceptionFilter(objectMapper), JwtTokenFilter.class);
