@@ -36,10 +36,9 @@ public class UserController {
         return loginService.login(request);
     }
 
-    @GetMapping("/mypage")
+    @GetMapping("/{team-id}/mypage")
     @ResponseStatus(HttpStatus.OK)
-    public MyPageResponse getMyPage(@AuthenticationPrincipal AuthDetails authDetails) {
-
-        return myPageService.getMyPage(authDetails.getUser());
+    public MyPageResponse getMyPageInTeam(@AuthenticationPrincipal AuthDetails authDetails, @PathVariable("team-id") Long teamId) {
+        return myPageService.getMyPage(authDetails.getUser().getId(), teamId);
     }
 }
