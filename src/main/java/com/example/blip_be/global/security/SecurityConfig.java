@@ -50,6 +50,7 @@ public class SecurityConfig {
                         authorize
                                 .requestMatchers(PERMIT_ALL_URL).permitAll()
                                 .requestMatchers("/files/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/users/**").authenticated()
                                 .requestMatchers(HttpMethod.GET, "/teams/**").authenticated()
                                 .requestMatchers(HttpMethod.POST, "/teams/**").authenticated()
                                 .requestMatchers(HttpMethod.PATCH, "/teams/**").authenticated()
