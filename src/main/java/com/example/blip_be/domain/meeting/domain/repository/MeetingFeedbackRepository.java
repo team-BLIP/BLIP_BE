@@ -10,6 +10,5 @@ import java.util.Optional;
 @Repository
 public interface MeetingFeedbackRepository extends JpaRepository<MeetingFeedback, Long> {
 
-    Optional<MeetingFeedback> findById(Long id);
-    List<MeetingFeedback> findAll();
+    List<MeetingFeedback> findAllByMeeting_Team_Id(Long teamId);
 }
