@@ -5,10 +5,8 @@ import com.example.blip_be.domain.meeting.domain.repository.MeetingRepository;
 import com.example.blip_be.domain.meeting.presentation.dto.response.EndMeetingResponse;
 import com.example.blip_be.domain.team.domain.Team;
 import com.example.blip_be.domain.file.service.PresignedUrlService;
-import com.example.blip_be.global.ai.service.AIRequest;
 import com.example.blip_be.global.ai.service.Result;
 import com.example.blip_be.global.ai.service.WebClientService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,12 +46,13 @@ public class EndMeetingService {
 
         URL presignedPutUrl = presignedUrlService.generatePresignedUrl(key);
 
+        URL presignedGetUrl = presignedUrlService.generatePresignedDownloadUrl(key);
+
         String fileUrl = "https://" + bucketName + ".s3." + region + ".amazonaws.com/" + key;
-        
         LocalDateTime endTime = LocalDateTime.now();
         meeting.endMeeting(fileUrl, endTime);
 
-        Result result = webClientService.analyzeMeeting(fileUrl).block();
+        Result result = webClientService.analyzeMeeting(presignedGetUrl.toString()).block();
         meeting.applyAnalysisResult(result.getSummary(), result.getFeedback());
 
         meetingRepository.save(meeting);

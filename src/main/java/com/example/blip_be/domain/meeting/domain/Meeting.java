@@ -49,7 +49,8 @@ public class Meeting {
     )
     private List<UserEntity> participants = new ArrayList<>();
 
-    @OneToOne(mappedBy = "meeting", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "summary_id")
     private MeetingSummary meetingSummary;
 
     private boolean isStarted = false;
