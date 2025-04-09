@@ -1,6 +1,5 @@
 package com.example.blip_be.domain.meeting.domain;
 
-import com.example.blip_be.domain.team.domain.Team;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
