@@ -3,12 +3,9 @@ package com.example.blip_be.domain.meeting.presentation.dto.response;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.List;
-
 @Getter
 @AllArgsConstructor
-public class MeetingResponse {
-
-    private String summary;
+public class MeetingFeedbackResponse {
+    private Long meetingId;
     private String feedback;
 }
