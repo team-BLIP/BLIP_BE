@@ -1,6 +1,5 @@
 package com.example.blip_be.domain.meeting.domain;
 
-import com.example.blip_be.domain.team.domain.Team;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -16,7 +15,7 @@ public class MeetingFeedback {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "LONGTEXT")
     private String feedback;
 
     @ManyToOne(fetch = FetchType.LAZY)

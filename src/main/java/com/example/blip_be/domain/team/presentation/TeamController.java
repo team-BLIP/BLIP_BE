@@ -1,5 +1,6 @@
 package com.example.blip_be.domain.team.presentation;
 
+import com.example.blip_be.domain.meeting.presentation.dto.response.MeetingFeedbackResponse;
 import com.example.blip_be.domain.team.presentation.dto.request.CreateTeamRequest;
 import com.example.blip_be.domain.team.presentation.dto.request.TeamJoinRequest;
 import com.example.blip_be.domain.team.presentation.dto.request.UpdateTeamSettingRequest;
@@ -27,6 +28,7 @@ public class TeamController {
     private final DeleteTeamService deleteTeamService;
     private final TeamQueryService teamQueryService;
     private final TeamDetailService teamDetailService;
+    private final GetFeedbackService getFeedbackService;
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
@@ -62,5 +64,10 @@ public class TeamController {
     @ResponseStatus(HttpStatus.OK)
     public TeamDetailResponse getTeamDetail(@PathVariable ("team-id")Long teamId) {
         return teamDetailService.getTeamDetail(teamId);
+    }
+
+    @GetMapping("/{team-id}/feedbacks")
+    public List<MeetingFeedbackResponse> getFeedbacks(@PathVariable("team-id") Long teamId) {
+        return getFeedbackService.getFeedback(teamId);
     }
 }
