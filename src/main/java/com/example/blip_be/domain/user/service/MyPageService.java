@@ -9,6 +9,7 @@ import com.example.blip_be.domain.team.exception.TeamMemberNotFoundException;
 import com.example.blip_be.domain.user.domain.UserEntity;
 import com.example.blip_be.domain.user.domain.repository.UserRepository;
 import com.example.blip_be.domain.user.exception.UserNotFoundException;
+import com.example.blip_be.domain.user.facade.UserFacade;
 import com.example.blip_be.domain.user.presentation.dto.response.MyPageResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -21,16 +22,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MyPageService {
 
-    private final UserRepository userRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final MeetingFeedbackRepository meetingFeedbackRepository;
+    private final UserFacade userFacade;
 
     @Transactional
-    public MyPageResponse getMyPage(Long userId, Long teamId) {
-        UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+    public MyPageResponse getMyPage(Long teamId) {
+        UserEntity user = userFacade.getCurrentUser();
 
-        TeamMember teamMember = teamMemberRepository.findByUserIdAndTeamId(userId, teamId)
+        TeamMember teamMember = teamMemberRepository.findByUserIdAndTeamId(user.getId(), teamId)
                 .orElseThrow(() -> TeamMemberNotFoundException.EXCEPTION);
 
         List<MeetingFeedbackResponse> feedbackResponses = meetingFeedbackRepository.findAllByMeeting_Team_Id(teamId)
@@ -39,7 +39,7 @@ public class MyPageService {
                 .collect(Collectors.toList());
 
         return MyPageResponse.builder()
-                .userId(userId)
+                .userId(user.getId())
                 .accountId(user.getAccountId())
                 .imageUrl(user.getImageUrl())
                 .email(user.getEmail())

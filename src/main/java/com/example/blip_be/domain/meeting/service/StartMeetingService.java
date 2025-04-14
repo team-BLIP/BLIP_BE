@@ -7,6 +7,8 @@ import com.example.blip_be.domain.meeting.presentation.dto.response.StartMeeting
 import com.example.blip_be.domain.team.TeamNotFoundException;
 import com.example.blip_be.domain.team.domain.Team;
 import com.example.blip_be.domain.team.domain.repository.TeamRepository;
+import com.example.blip_be.domain.user.domain.UserEntity;
+import com.example.blip_be.domain.user.facade.UserFacade;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,13 +22,17 @@ public class StartMeetingService {
 
     private final MeetingRepository meetingRepository;
     private final TeamRepository teamRepository;
+    private final UserFacade userFacade;
 
     @Transactional
-    public StartMeetingResponse startMeeting(StartMeetingRequest request, Long leaderId) {
+    public StartMeetingResponse startMeeting(StartMeetingRequest request) {
+
+        UserEntity user = userFacade.getCurrentUser();
+
         Team team = teamRepository.findById(request.getTeamId())
                 .orElseThrow(() -> new IllegalArgumentException("팀을 찾을 수 없습니다."));
 
-        if (!team.getLeader().getId().equals(leaderId)) {
+        if (!team.getLeader().getId().equals(user.getId())) {
             throw new IllegalArgumentException("회의를 시작할 권한이 없습니다.");
         }
 

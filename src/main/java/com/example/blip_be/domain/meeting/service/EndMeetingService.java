@@ -5,6 +5,8 @@ import com.example.blip_be.domain.meeting.domain.repository.MeetingRepository;
 import com.example.blip_be.domain.meeting.presentation.dto.response.EndMeetingResponse;
 import com.example.blip_be.domain.team.domain.Team;
 import com.example.blip_be.domain.file.service.PresignedUrlService;
+import com.example.blip_be.domain.user.domain.UserEntity;
+import com.example.blip_be.domain.user.facade.UserFacade;
 import com.example.blip_be.global.ai.service.Result;
 import com.example.blip_be.global.ai.service.WebClientService;
 import jakarta.transaction.Transactional;
@@ -22,6 +24,7 @@ public class EndMeetingService {
     private final MeetingRepository meetingRepository;
     private final WebClientService webClientService;
     private final PresignedUrlService presignedUrlService;
+    private final UserFacade userFacade;
 
     @Value("${cloud.aws.s3.audio-path}")
     private String audioPath;
@@ -33,12 +36,15 @@ public class EndMeetingService {
     private String bucketName;
 
     @Transactional
-    public EndMeetingResponse endMeeting(Long leaderId, Long meetingId) {
+    public EndMeetingResponse endMeeting(Long meetingId) {
+
+        UserEntity user = userFacade.getCurrentUser();
+
         Meeting meeting = meetingRepository.findById(meetingId)
                 .orElseThrow(() -> new IllegalArgumentException("찾을 수 없는 회의"));
 
         Team team = meeting.getTeam();
-        if (!team.getLeader().getId().equals(leaderId)) {
+        if (!team.getLeader().getId().equals(user.getId())) {
             throw new IllegalArgumentException("회의를 종료할 권한이 없습니다.");
         }
 
