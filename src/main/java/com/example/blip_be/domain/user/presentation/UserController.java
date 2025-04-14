@@ -38,7 +38,7 @@ public class UserController {
 
     @GetMapping("/{team-id}/mypage")
     @ResponseStatus(HttpStatus.OK)
-    public MyPageResponse getMyPageInTeam(@AuthenticationPrincipal AuthDetails authDetails, @PathVariable("team-id") Long teamId) {
-        return myPageService.getMyPage(authDetails.getUser().getId(), teamId);
+    public MyPageResponse getMyPageInTeam(@PathVariable("team-id") Long teamId) {
+        return myPageService.getMyPage(teamId);
     }
 }

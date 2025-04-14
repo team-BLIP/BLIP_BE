@@ -3,6 +3,7 @@ package com.example.blip_be.domain.team.presentation;
 import com.example.blip_be.domain.meeting.presentation.dto.response.MeetingFeedbackResponse;
 import com.example.blip_be.domain.team.presentation.dto.request.CreateTeamRequest;
 import com.example.blip_be.domain.team.presentation.dto.request.TeamJoinRequest;
+import com.example.blip_be.domain.team.presentation.dto.request.TeamQueryRequest;
 import com.example.blip_be.domain.team.presentation.dto.request.UpdateTeamSettingRequest;
 import com.example.blip_be.domain.team.presentation.dto.response.CreateTeamResponse;
 import com.example.blip_be.domain.team.presentation.dto.response.TeamDetailResponse;
@@ -56,8 +57,8 @@ public class TeamController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<TeamListResponse> getMyTeams(@AuthenticationPrincipal AuthDetails authDetails) {
-        return teamQueryService.getMyTeams(authDetails.getUser().getId());
+    public List<TeamListResponse> getMyTeams(@RequestBody @Valid TeamQueryRequest request) {
+        return teamQueryService.getMyTeams(request);
     }
 
     @GetMapping("/{team-id}")
