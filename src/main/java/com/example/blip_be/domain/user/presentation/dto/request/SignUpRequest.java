@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class SignUpRequest {
 
     @NotBlank

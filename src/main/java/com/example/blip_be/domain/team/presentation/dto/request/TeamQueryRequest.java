@@ -1,13 +1,12 @@
 package com.example.blip_be.domain.team.presentation.dto.request;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class UpdateTeamSettingRequest {
+public class TeamQueryRequest {
 
-    private String newName;
-    private String imageUrl;
+    private Long userId;
 }
