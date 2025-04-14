@@ -29,25 +29,25 @@ public class MeetingController {
 
     @PostMapping("/start")
     @ResponseStatus(HttpStatus.OK)
-    public StartMeetingResponse startMeeting(@RequestBody @Valid StartMeetingRequest request, @AuthenticationPrincipal AuthDetails authDetails) {
-        return startMeetingService.startMeeting(request, authDetails.getUser().getId());
+    public StartMeetingResponse startMeeting(@RequestBody @Valid StartMeetingRequest request) {
+        return startMeetingService.startMeeting(request);
     }
 
     @PostMapping("/join/{meeting-id}")
     @ResponseStatus(HttpStatus.OK)
-    public JoinMeetingResponse joinMeeting(@PathVariable ("meeting-id") Long meetingId, @AuthenticationPrincipal AuthDetails authDetails) {
-        return joinMeetingService.joinMeeting(meetingId, authDetails.getUser().getId());
+    public JoinMeetingResponse joinMeeting(@PathVariable ("meeting-id") Long meetingId) {
+        return joinMeetingService.joinMeeting(meetingId);
     }
 
     @PostMapping("/leave/{meeting-id}")
     @ResponseStatus(HttpStatus.OK)
-    public LeaveMeetingResponse leaveMeeting(@AuthenticationPrincipal AuthDetails authDetails, @PathVariable ("meeting-id") Long meetingId) {
-        return leaveMeetingService.leaveMeeting(meetingId, authDetails.getUser().getId());
+    public LeaveMeetingResponse leaveMeeting(@PathVariable ("meeting-id") Long meetingId) {
+        return leaveMeetingService.leaveMeeting(meetingId);
     }
 
     @PostMapping("/end/{meeting-id}")
     @ResponseStatus(HttpStatus.OK)
-    public EndMeetingResponse endMeeting(@AuthenticationPrincipal AuthDetails authDetails, @PathVariable ("meeting-id") Long meetingId) {
-        return endMeetingService.endMeeting(authDetails.getUser().getId(), meetingId);
+    public EndMeetingResponse endMeeting(@PathVariable ("meeting-id") Long meetingId) {
+        return endMeetingService.endMeeting(meetingId);
     }
 }
