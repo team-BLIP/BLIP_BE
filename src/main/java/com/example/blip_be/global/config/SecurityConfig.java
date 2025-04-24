@@ -1,6 +1,5 @@
-package com.example.blip_be.global.security;
+package com.example.blip_be.global.config;
 
-import com.example.blip_be.global.enums.Permission;
 import com.example.blip_be.global.error.ExceptionFilter;
 import com.example.blip_be.global.security.jwt.JwtTokenFilter;
 import com.example.blip_be.global.security.jwt.JwtTokenProvider;
@@ -13,7 +12,6 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

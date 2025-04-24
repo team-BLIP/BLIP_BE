@@ -1,4 +1,4 @@
-package com.example.blip_be.global.ai.service;
+package com.example.blip_be.infra.ai;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;

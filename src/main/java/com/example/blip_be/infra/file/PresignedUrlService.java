@@ -1,4 +1,4 @@
-package com.example.blip_be.domain.file.service;
+package com.example.blip_be.infra.file;
 
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;

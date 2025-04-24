@@ -1,4 +1,4 @@
-package com.example.blip_be.global.config;
+package com.example.blip_be.infra.email;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

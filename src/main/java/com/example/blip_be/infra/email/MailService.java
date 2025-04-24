@@ -1,4 +1,4 @@
-package com.example.blip_be.domain.email.service;
+package com.example.blip_be.infra.email;
 
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.example.blip_be.global.config;
+package com.example.blip_be.infra.ai;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

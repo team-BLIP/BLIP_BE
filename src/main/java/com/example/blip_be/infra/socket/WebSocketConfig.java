@@ -1,4 +1,4 @@
-package com.example.blip_be.global.config;
+package com.example.blip_be.infra.socket;
 
 import com.example.blip_be.global.socket.JvbService;
 import com.example.blip_be.global.socket.SignalingSocketHandler;

@@ -1,6 +1,5 @@
-package com.example.blip_be.domain.file.presentation;
+package com.example.blip_be.infra.file;
 
-import com.example.blip_be.domain.file.service.PresignedUrlService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,4 +1,4 @@
-package com.example.blip_be.global.ai.service;
+package com.example.blip_be.infra.ai;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
