@@ -1,6 +1,6 @@
 package com.example.blip_be.domain.user.service;
 
-import com.example.blip_be.domain.email.service.RedisEmailAuthentication;
+import com.example.blip_be.infra.email.RedisEmailAuthentication;
 import com.example.blip_be.domain.user.domain.UserEntity;
 import com.example.blip_be.domain.user.domain.repository.UserRepository;
 import com.example.blip_be.domain.user.exception.UserExistException;

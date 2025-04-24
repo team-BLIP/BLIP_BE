@@ -1,7 +1,7 @@
 package com.example.blip_be.domain.auth.presentation;
 
-import com.example.blip_be.domain.email.service.MailService;
-import com.example.blip_be.domain.email.service.RedisEmailAuthentication;
+import com.example.blip_be.infra.email.MailService;
+import com.example.blip_be.infra.email.RedisEmailAuthentication;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
