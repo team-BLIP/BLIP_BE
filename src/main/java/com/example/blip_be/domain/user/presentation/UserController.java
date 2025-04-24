@@ -2,9 +2,11 @@ package com.example.blip_be.domain.user.presentation;
 
 import com.example.blip_be.domain.auth.presentation.dto.TokenResponse;
 import com.example.blip_be.domain.user.domain.UserEntity;
+import com.example.blip_be.domain.user.presentation.dto.request.ChangePasswordRequest;
 import com.example.blip_be.domain.user.presentation.dto.request.LoginRequest;
 import com.example.blip_be.domain.user.presentation.dto.request.SignUpRequest;
 import com.example.blip_be.domain.user.presentation.dto.response.MyPageResponse;
+import com.example.blip_be.domain.user.service.ChangePasswordService;
 import com.example.blip_be.domain.user.service.LoginService;
 import com.example.blip_be.domain.user.service.MyPageService;
 import com.example.blip_be.domain.user.service.SignUpService;
@@ -23,6 +25,7 @@ public class UserController {
     private final SignUpService signUpService;
     private final LoginService loginService;
     private final MyPageService myPageService;
+    private final ChangePasswordService changePasswordService;
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
@@ -36,7 +39,13 @@ public class UserController {
         return loginService.login(request);
     }
 
-    @GetMapping("/{team-id}/mypage")
+    @PatchMapping("/password")
+    @ResponseStatus(HttpStatus.OK)
+    public void changePassword(@RequestBody @Valid ChangePasswordRequest request) {
+        changePasswordService.changePassword(request);
+    }
+
+    @GetMapping("/{team-id}/mypage") // 수정 필요
     @ResponseStatus(HttpStatus.OK)
     public MyPageResponse getMyPageInTeam(@PathVariable("team-id") Long teamId) {
         return myPageService.getMyPage(teamId);

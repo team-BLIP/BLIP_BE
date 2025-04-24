@@ -65,4 +65,8 @@ public class UserEntity {
     public void updateMain(Team team) {
         this.main = team;
     }
+
+    public void changePassword(String password) {
+        this.password = password;
+    }
 }
