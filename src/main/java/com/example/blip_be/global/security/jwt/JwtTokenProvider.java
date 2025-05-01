@@ -5,18 +5,17 @@ import com.example.blip_be.domain.auth.domain.repository.RefreshTokenRepository;
 import com.example.blip_be.global.exception.ExpiredTokenException;
 import com.example.blip_be.global.exception.InvalidTokenException;
 import com.example.blip_be.global.security.auth.AuthDetailsService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.util.Date;
 
 @RequiredArgsConstructor
@@ -26,7 +25,11 @@ public class JwtTokenProvider {
     private final JwtProperties jwtProperty;
     private final RefreshTokenRepository refreshTokenRepository;
     private final AuthDetailsService authDetailsService;
-    private static final Logger logger = LoggerFactory.getLogger(JwtTokenFilter.class);
+
+    private Key getSigningKey() {
+        String secret = jwtProperty.getSecretKey();
+        return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    }
 
     public String generateAccessToken(String accountId) {
         return generateToken(accountId, "access", jwtProperty.getAccessExp());
@@ -38,18 +41,16 @@ public class JwtTokenProvider {
                 .accountId(accountId)
                 .token(refreshToken)
                 .build());
-
         return refreshToken;
-
     }
 
     private String generateToken(String accountId, String type, Long exp) {
         return Jwts.builder()
-                .signWith(SignatureAlgorithm.HS256, jwtProperty.getSecretKey())
                 .setSubject(accountId)
                 .claim("type", type)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + exp * 1000))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -59,7 +60,7 @@ public class JwtTokenProvider {
     }
 
     public String parseToken(String bearerToken) {
-        if(bearerToken != null && bearerToken.startsWith(jwtProperty.getPrefix())) {
+        if (bearerToken != null && bearerToken.startsWith(jwtProperty.getPrefix())) {
             return bearerToken.replace(jwtProperty.getPrefix(), "");
         }
         return null;
@@ -76,11 +77,14 @@ public class JwtTokenProvider {
 
     private Claims getTokenBody(String token) {
         try {
-            return Jwts.parser().setSigningKey(jwtProperty.getSecretKey())
-                    .parseClaimsJws(token).getBody();
-        } catch (io.jsonwebtoken.ExpiredJwtException e){
+            return Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (ExpiredJwtException e) {
             throw ExpiredTokenException.EXCEPTION;
-        } catch (Exception e) {
+        } catch (JwtException e) {
             throw InvalidTokenException.EXCEPTION;
         }
     }

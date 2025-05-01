@@ -6,10 +6,7 @@ import com.example.blip_be.domain.user.presentation.dto.request.ChangePasswordRe
 import com.example.blip_be.domain.user.presentation.dto.request.LoginRequest;
 import com.example.blip_be.domain.user.presentation.dto.request.SignUpRequest;
 import com.example.blip_be.domain.user.presentation.dto.response.MyPageResponse;
-import com.example.blip_be.domain.user.service.ChangePasswordService;
-import com.example.blip_be.domain.user.service.LoginService;
-import com.example.blip_be.domain.user.service.MyPageService;
-import com.example.blip_be.domain.user.service.SignUpService;
+import com.example.blip_be.domain.user.service.*;
 import com.example.blip_be.global.security.auth.AuthDetails;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +23,7 @@ public class UserController {
     private final LoginService loginService;
     private final MyPageService myPageService;
     private final ChangePasswordService changePasswordService;
+    private final LogoutService logoutService;
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
@@ -37,6 +35,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public TokenResponse login(@RequestBody @Valid LoginRequest request) {
         return loginService.login(request);
+    }
+
+    @DeleteMapping("/delete")
+    public void logout() {
+        logoutService.logout();
     }
 
     @PatchMapping("/password")

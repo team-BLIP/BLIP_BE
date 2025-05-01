@@ -26,11 +26,11 @@ public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final ObjectMapper objectMapper;
-
-    private final String[] PERMIT_ALL_URL = {
-            "/auth/**",
-            "/users/login",
-            "/users/signup"};
+//
+//    private final String[] PERMIT_ALL_URL = {
+//            "/auth/**",
+//            "/users/login",
+//            "/users/signup"};
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -46,16 +46,17 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize ->
                         authorize
-                                .requestMatchers(PERMIT_ALL_URL).permitAll()
-                                .requestMatchers("/files/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/users/**").authenticated()
-                                .requestMatchers(HttpMethod.GET, "/teams/**").authenticated()
-                                .requestMatchers(HttpMethod.POST, "/teams/**").authenticated()
-                                .requestMatchers(HttpMethod.PATCH, "/teams/**").authenticated()
-                                .requestMatchers(HttpMethod.DELETE, "/teams/**").authenticated()
-                                .requestMatchers(HttpMethod.POST, "/meetings/**").authenticated()
-                                .requestMatchers(HttpMethod.GET, "/teams/*/feedbacks").authenticated()
-                                .requestMatchers(HttpMethod.GET, "/teams/*/mypage").authenticated()
+                                .anyRequest().permitAll()
+//                                .requestMatchers(PERMIT_ALL_URL).permitAll()
+//                                .requestMatchers("/files/**").permitAll()
+//                                .requestMatchers(HttpMethod.GET, "/users/**").authenticated()
+//                                .requestMatchers(HttpMethod.GET, "/teams/**").authenticated()
+//                                .requestMatchers(HttpMethod.POST, "/teams/**").authenticated()
+//                                .requestMatchers(HttpMethod.PATCH, "/teams/**").authenticated()
+//                                .requestMatchers(HttpMethod.DELETE, "/teams/**").authenticated()
+//                                .requestMatchers(HttpMethod.POST, "/meetings/**").authenticated()
+//                                .requestMatchers(HttpMethod.GET, "/teams/*/feedbacks").authenticated()
+//                                .requestMatchers(HttpMethod.GET, "/teams/*/mypage").authenticated()
                         
                 )
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
