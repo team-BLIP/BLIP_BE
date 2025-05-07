@@ -11,5 +11,5 @@ import java.util.UUID;
 public class TeamJoinRequest {
 
     private String inviteLink;
-    private String nickName;
+    private String nickname;
 }

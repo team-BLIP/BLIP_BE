@@ -12,5 +12,5 @@ public class  CreateTeamRequest {
     @NotNull(message = "3 ~ 20자까지 가능합니다.")
     private String teamName;
 
-    private String nickName;
+    private String nickname;
 }
